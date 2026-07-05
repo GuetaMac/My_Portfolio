@@ -231,7 +231,6 @@ function ProjectCard({ project, index, t }) {
                       border: "1px solid " + t.cardBorder,
                       borderRadius: "8px",
                       overflow: "hidden",
-                      height: "420px",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
@@ -357,7 +356,8 @@ export default function Projects({ t }) {
           font-size: 1.35rem;
         }
         .project-image-frame {
-          height: 420px;
+          aspect-ratio: 16 / 9;
+          height: auto;
         }
         .project-slider-btn {
           width: 44px;
@@ -375,7 +375,8 @@ export default function Projects({ t }) {
             font-size: 1.1rem;
           }
           .project-image-frame {
-            height: 220px;
+            aspect-ratio: 16 / 9;
+            height: auto;
           }
           .project-slider-row {
             gap: 8px !important;
