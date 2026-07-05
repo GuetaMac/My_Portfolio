@@ -41,7 +41,7 @@ import img1st1 from "./assets/1stsafety1.png";
 import img1st2 from "./assets/1stsafety2.jpg";
 import img1st3 from "./assets/1stsafety3.jpg";
 import img1st4 from "./assets/1stsafety4.jpg";
-import imgBIChallenge from "./assets/BI Challenge.jpg";
+import imgBIChallenge from "./assets/bi-challenge.jpg";
 import imgRpm1 from "./assets/rpm1.png";
 import imgRpm2 from "./assets/rpm2.png";
 import imgRpm3 from "./assets/rpm3.png";
