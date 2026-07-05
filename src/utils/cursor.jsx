@@ -1,13 +1,40 @@
 import { useRef, useState, useEffect } from "react";
 
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== "undefined"
+      ? window.matchMedia("(pointer: coarse), (max-width: 640px)").matches
+      : false,
+  );
+
+  useEffect(() => {
+    const mq = window.matchMedia("(pointer: coarse), (max-width: 640px)");
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    window.addEventListener("resize", update);
+    return () => {
+      mq.removeEventListener("change", update);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
+
+  return isMobile;
+}
+
 export function CustomCursor({ t }) {
   const dot = useRef(null);
   const ring = useRef(null);
   const pos = useRef({ x: 0, y: 0 });
   const ringPos = useRef({ x: 0, y: 0 });
   const raf = useRef(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
+    // Skip entirely on touch/mobile — no mouse to track, and we don't
+    // want to hide the real cursor or leave a stray dot/ring behind.
+    if (isMobile) return;
+
     const move = (e) => {
       pos.current = { x: e.clientX, y: e.clientY };
       if (dot.current)
@@ -44,7 +71,11 @@ export function CustomCursor({ t }) {
       document.removeEventListener("mousemove", move);
       cancelAnimationFrame(raf.current);
     };
-  }, []);
+  }, [isMobile]);
+
+  // Render nothing on mobile so the browser's default touch behavior
+  // (and any tappable cursor) is left untouched.
+  if (isMobile) return null;
 
   return (
     <>
