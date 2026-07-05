@@ -176,6 +176,40 @@ export default function Experience({ t }) {
                 >
                   Academic Honors
                 </h3>
+
+                {/* Cum Laude highlight */}
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "12px",
+                    padding: "14px 16px",
+                    marginBottom: "14px",
+                    border: "1px solid " + t.cardBorder,
+                    transition: "border-color 0.4s, color 0.4s",
+                  }}
+                >
+                  <span
+                    style={{
+                      color: t.accentText,
+                      fontFamily: "monospace",
+                      fontSize: "0.7rem",
+                    }}
+                  >
+                    ✦
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: "monospace",
+                      fontSize: "0.75rem",
+                      color: t.bodyStrong,
+                      letterSpacing: "0.06em",
+                    }}
+                  >
+                    Cum Laude — Graduate
+                  </span>
+                </div>
+
                 <div
                   style={{
                     display: "flex",
