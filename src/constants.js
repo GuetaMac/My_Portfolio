@@ -45,6 +45,12 @@ import imgBIChallenge from "./assets/bi-challenge.jpg";
 import imgRpm1 from "./assets/rpm1.png";
 import imgRpm2 from "./assets/rpm2.png";
 import imgRpm3 from "./assets/rpm3.png";
+import imgPed1 from "./assets/ped1.png";
+import imgPed2 from "./assets/ped2.png";
+import imgPed3 from "./assets/ped3.png";
+import imgFood1 from "./assets/food1.png";
+import imgFood2 from "./assets/food2.png";
+import imgFood3 from "./assets/food3.png";
 
 export const PROJECTS = [
   {
@@ -55,7 +61,7 @@ export const PROJECTS = [
     description:
       "Led end-to-end development of a research publication tracking system for an academic institution. Built with database integration, workflow automation, and role-based access.",
     tech: ["PHP", "Laravel", "SQL", "JavaScript"],
-    highlight: "OJT Capstone Project",
+    highlight: "OJT Project",
     images: [imgRpm1, imgRpm2, imgRpm3],
   },
   {
@@ -79,6 +85,28 @@ export const PROJECTS = [
     tech: ["Laravel", "PHP", "SQL", "JavaScript", "Power BI"],
     highlight: "Capstone Project",
     images: [img1st1, img1st2, img1st3, img1st4],
+  },
+  {
+    id: "04",
+    title: "Pediatric Management System",
+    type: "Full-Stack Web App",
+    year: "2026",
+    description:
+      "Served as backend developer for a capstone project focused on streamlining pediatric patient records, appointment scheduling, and medical history tracking for healthcare providers.",
+    tech: ["PHP", "Laravel", "SQL", "JavaScript"],
+    highlight: "Capstone Project",
+    images: [imgPed1, imgPed2, imgPed3],
+  },
+  {
+    id: "05",
+    title: "Food Decidor",
+    type: "Personal Project",
+    year: "2026",
+    description:
+      "A random elimination tool built to solve the everyday 'what to eat' dilemma. Users add their food choices, and the web app randomly removes options one by one — narrowing down the list round by round until a single winner remains.",
+    tech: ["JavaScript", "React"],
+    highlight: "Personal Project",
+    images: [imgFood1, imgFood2, imgFood3],
   },
 ];
 export const CERTS = [
