@@ -20,7 +20,7 @@ export const SKILLS = {
     "Tailwind CSS",
     "RESTful APIs",
     "Node.js",
-    "Express.jssssssssss",
+    "Express.js",
   ],
   "Data & Analytics": [
     "Power BI",
