@@ -21,21 +21,60 @@ export default function Contact({ t }) {
   return (
     <section
       id="contact"
+      className="contact-section"
       style={{
-        padding: "120px 48px 80px",
         background: t.bg,
         transition: "background 0.4s",
       }}
     >
+      <style>{`
+        .contact-section {
+          padding: 120px 48px 80px;
+        }
+        .contact-heading {
+          font-size: clamp(2.8rem, 7vw, 6rem);
+        }
+        .contact-row {
+          display: flex;
+          align-items: center;
+          gap: 32px;
+          padding: 20px 0;
+        }
+        .contact-row-label {
+          width: 60px;
+          flex-shrink: 0;
+        }
+
+        @media (max-width: 640px) {
+          .contact-section {
+            padding: 80px 24px 56px;
+          }
+          .contact-heading {
+            font-size: clamp(2.2rem, 11vw, 3.2rem);
+          }
+          .contact-row {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 6px;
+            padding: 16px 0;
+          }
+          .contact-row-label {
+            width: auto;
+          }
+          .contact-intro {
+            max-width: 100% !important;
+          }
+        }
+      `}</style>
       <div style={{ maxWidth: "1080px", margin: "0 auto" }}>
         <FadeIn>
           <SectionLabel t={t}>05 — CONTACT</SectionLabel>
         </FadeIn>
         <FadeIn delay={0.1}>
           <h2
+            className="contact-heading"
             style={{
               fontFamily: "'Playfair Display', serif",
-              fontSize: "clamp(2.8rem, 7vw, 6rem)",
               color: t.heading,
               fontWeight: 700,
               lineHeight: 1.0,
@@ -51,6 +90,7 @@ export default function Contact({ t }) {
         </FadeIn>
         <FadeIn delay={0.2}>
           <p
+            className="contact-intro"
             style={{
               color: t.body,
               fontFamily: "Georgia, serif",
@@ -91,23 +131,19 @@ export default function Contact({ t }) {
             ].map((item) => (
               <div
                 key={item.label}
+                className="contact-row"
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "32px",
-                  padding: "20px 0",
                   borderBottom: "1px solid " + t.divider,
                   transition: "border-color 0.4s",
                 }}
               >
                 <span
+                  className="contact-row-label"
                   style={{
                     fontFamily: "monospace",
                     fontSize: "0.62rem",
-                    width: "60px",
                     color: t.accentMuted,
                     letterSpacing: "0.12em",
-                    flexShrink: 0,
                     transition: "color 0.4s",
                   }}
                 >

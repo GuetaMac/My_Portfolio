@@ -32,10 +32,10 @@ function ProjectCard({ project, index, t }) {
     <FadeIn delay={0.1 * index}>
       <div
         data-hover
+        className="project-card"
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
         style={{
-          padding: "40px 44px",
           border:
             "1px solid " +
             (hovered && !project.placeholder
@@ -74,9 +74,9 @@ function ProjectCard({ project, index, t }) {
               {project.id}
             </span>
             <h3
+              className="project-title"
               style={{
                 fontFamily: "'Playfair Display', serif",
-                fontSize: "1.35rem",
                 color: hovered ? t.heading : t.bodyStrong,
                 fontWeight: 600,
                 transition: "color 0.3s",
@@ -190,10 +190,12 @@ function ProjectCard({ project, index, t }) {
               >
                 {/* Slider row */}
                 <div
+                  className="project-slider-row"
                   style={{ display: "flex", alignItems: "center", gap: "14px" }}
                 >
                   {/* Prev */}
                   <button
+                    className="project-slider-btn"
                     onClick={() =>
                       goTo(
                         imgIndex === 0
@@ -222,6 +224,7 @@ function ProjectCard({ project, index, t }) {
 
                   {/* Image frame */}
                   <div
+                    className="project-image-frame"
                     style={{
                       flex: 1,
                       position: "relative",
@@ -270,6 +273,7 @@ function ProjectCard({ project, index, t }) {
 
                   {/* Next */}
                   <button
+                    className="project-slider-btn"
                     onClick={() =>
                       goTo(
                         imgIndex === project.images.length - 1
@@ -336,12 +340,53 @@ export default function Projects({ t }) {
   return (
     <section
       id="projects"
+      className="projects-section"
       style={{
-        padding: "120px 48px",
         background: t.bg,
         transition: "background 0.4s",
       }}
     >
+      <style>{`
+        .projects-section {
+          padding: 120px 48px;
+        }
+        .project-card {
+          padding: 40px 44px;
+        }
+        .project-title {
+          font-size: 1.35rem;
+        }
+        .project-image-frame {
+          height: 420px;
+        }
+        .project-slider-btn {
+          width: 44px;
+          height: 44px;
+        }
+
+        @media (max-width: 640px) {
+          .projects-section {
+            padding: 72px 20px;
+          }
+          .project-card {
+            padding: 28px 22px;
+          }
+          .project-title {
+            font-size: 1.1rem;
+          }
+          .project-image-frame {
+            height: 220px;
+          }
+          .project-slider-row {
+            gap: 8px !important;
+          }
+          .project-slider-btn {
+            width: 34px;
+            height: 34px;
+            font-size: 18px !important;
+          }
+        }
+      `}</style>
       <div style={{ maxWidth: "1080px", margin: "0 auto" }}>
         <FadeIn>
           <SectionLabel t={t}>03 — PROJECTS</SectionLabel>

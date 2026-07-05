@@ -8,24 +8,89 @@ export default function Hero({ t }) {
   return (
     <section
       id="about"
+      className="hero-section"
       style={{
         minHeight: "100vh",
         display: "flex",
         alignItems: "center",
-        padding: "100px 48px 80px",
         background: t.bg,
         transition: "background 0.4s",
       }}
     >
+      <style>{`
+        .hero-section {
+          padding: 100px 48px 80px;
+        }
+        .hero-grid {
+          display: grid;
+          grid-template-columns: 1fr 220px;
+          gap: 80px;
+          align-items: center;
+        }
+        .hero-photo-wrap {
+          width: 220px;
+          height: 220px;
+        }
+        .hero-meta-row {
+          display: flex;
+          gap: 0;
+          flex-wrap: wrap;
+        }
+        .hero-meta-item {
+          padding-right: 40px;
+          margin-right: 40px;
+        }
+        .hero-cta-row {
+          display: flex;
+          gap: 16px;
+          flex-wrap: wrap;
+        }
+
+        @media (max-width: 640px) {
+          .hero-section {
+            padding: 100px 24px 56px;
+            min-height: unset;
+          }
+          .hero-grid {
+            grid-template-columns: 1fr;
+            gap: 40px;
+          }
+          .hero-grid > div:first-child {
+            order: 2;
+          }
+          .hero-grid > div:last-child {
+            order: 1;
+          }
+          .hero-photo-wrap {
+            width: 160px;
+            height: 160px;
+          }
+          .hero-meta-row {
+            flex-direction: column;
+            gap: 20px;
+            padding-top: 20px !important;
+          }
+          .hero-meta-item {
+            padding-right: 0;
+            margin-right: 0;
+            border-right: none !important;
+          }
+          .hero-cta-row {
+            flex-direction: column;
+            align-items: stretch;
+          }
+          .hero-cta-row a,
+          .hero-cta-row button {
+            text-align: center;
+          }
+        }
+      `}</style>
       <div
+        className="hero-grid"
         style={{
           maxWidth: "1080px",
           margin: "0 auto",
           width: "100%",
-          display: "grid",
-          gridTemplateColumns: "1fr 220px",
-          gap: "80px",
-          alignItems: "center",
         }}
       >
         {/* Left: text */}
@@ -111,10 +176,8 @@ export default function Hero({ t }) {
 
           <FadeIn delay={0.68}>
             <div
+              className="hero-cta-row"
               style={{
-                display: "flex",
-                gap: "16px",
-                flexWrap: "wrap",
                 marginBottom: "56px",
               }}
             >
@@ -177,12 +240,10 @@ export default function Hero({ t }) {
 
           <FadeIn delay={0.78}>
             <div
+              className="hero-meta-row"
               style={{
-                display: "flex",
-                gap: 0,
                 borderTop: "1px solid " + t.divider,
                 paddingTop: "28px",
-                flexWrap: "wrap",
                 transition: "border-color 0.4s",
               }}
             >
@@ -193,9 +254,8 @@ export default function Hero({ t }) {
               ].map((item, i) => (
                 <div
                   key={item.label}
+                  className="hero-meta-item"
                   style={{
-                    paddingRight: "40px",
-                    marginRight: "40px",
                     borderRight: i < 2 ? "1px solid " + t.divider : "none",
                     transition: "border-color 0.4s",
                   }}
@@ -238,9 +298,8 @@ export default function Hero({ t }) {
             }}
           >
             <div
+              className="hero-photo-wrap"
               style={{
-                width: "220px",
-                height: "220px",
                 borderRadius: "50%",
                 padding: "4px",
                 background: `conic-gradient(${t.accentText} 0deg, ${t.accentText} 120deg, transparent 120deg, transparent 180deg, ${t.accentText} 180deg, ${t.accentText} 300deg, transparent 300deg)`,

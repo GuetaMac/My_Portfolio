@@ -22,12 +22,37 @@ export default function Skills({ t }) {
   return (
     <section
       id="skills"
+      className="skills-section"
       style={{
-        padding: "120px 48px",
         background: t.bgAlt,
         transition: "background 0.4s",
       }}
     >
+      <style>{`
+        .skills-section {
+          padding: 120px 48px;
+        }
+        .skills-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+          gap: 1px;
+        }
+        .skills-card {
+          padding: 32px;
+        }
+
+        @media (max-width: 640px) {
+          .skills-section {
+            padding: 72px 20px;
+          }
+          .skills-grid {
+            grid-template-columns: 1fr;
+          }
+          .skills-card {
+            padding: 24px 20px;
+          }
+        }
+      `}</style>
       <div style={{ maxWidth: "1080px", margin: "0 auto" }}>
         <FadeIn>
           <SectionLabel t={t}>02 — SKILLS</SectionLabel>
@@ -48,10 +73,8 @@ export default function Skills({ t }) {
           </h2>
         </FadeIn>
         <div
+          className="skills-grid"
           style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-            gap: "1px",
             border: "1px solid " + t.cardBorder,
             transition: "border-color 0.4s",
           }}
@@ -59,8 +82,8 @@ export default function Skills({ t }) {
           {Object.entries(SKILLS).map(([category, items], i) => (
             <FadeIn key={category} delay={0.08 * i}>
               <div
+                className="skills-card"
                 style={{
-                  padding: "32px",
                   background: t.bg,
                   transition: "background 0.4s",
                 }}

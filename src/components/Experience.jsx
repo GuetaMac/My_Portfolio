@@ -22,23 +22,43 @@ export default function Experience({ t }) {
   return (
     <section
       id="experience"
+      className="experience-section"
       style={{
-        padding: "120px 48px",
         background: t.bgAlt,
         transition: "background 0.4s",
       }}
     >
+      <style>{`
+        .experience-section {
+          padding: 120px 48px;
+        }
+        .experience-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 80px;
+        }
+        .experience-card {
+          padding: 28px 32px;
+        }
+
+        @media (max-width: 640px) {
+          .experience-section {
+            padding: 72px 24px;
+          }
+          .experience-grid {
+            grid-template-columns: 1fr;
+            gap: 48px;
+          }
+          .experience-card {
+            padding: 22px 20px;
+          }
+        }
+      `}</style>
       <div style={{ maxWidth: "1080px", margin: "0 auto" }}>
         <FadeIn>
           <SectionLabel t={t}>04 — EXPERIENCE & RECOGNITION</SectionLabel>
         </FadeIn>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: "80px",
-          }}
-        >
+        <div className="experience-grid">
           {/* Left column */}
           <div>
             <FadeIn delay={0.1}>
@@ -57,8 +77,8 @@ export default function Experience({ t }) {
             </FadeIn>
             <FadeIn delay={0.15}>
               <div
+                className="experience-card"
                 style={{
-                  padding: "28px 32px",
                   border: "1px solid " + t.cardBorder,
                   transition: "border-color 0.4s",
                 }}
