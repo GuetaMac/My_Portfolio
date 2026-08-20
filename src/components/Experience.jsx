@@ -131,9 +131,15 @@ export default function Experience({ t }) {
                 >
                   {[
                     "Led development and debugging of a Research Publication Management System",
-                    "Built database integration and workflow implementation",
-                    "Produced charts and visual reports for documentation",
-                    "Installed and configured 3 office systems",
+                    "Designed and implemented new system features based on supervisor feedback and user requirements",
+                    "Improved the user interface (UI) and developed responsive layouts for better user experience across devices",
+                    "Performed system debugging, testing, and issue resolution to improve functionality and performance",
+                    "Implemented notification features, including in-system and email notifications",
+                    "Enhanced system workflows, including archive management, manuscript handling, and volume organization",
+                    "Participated in system consultations, presentations, and final demonstrations with supervisors and office management, incorporating feedback into system improvements",
+                    "Managed and organized research publication data using Microsoft Excel, including data cleaning, analysis, and visualization through charts and graphs",
+                    "Created publication materials, reports, and documentation to support research management initiatives",
+                    "Assisted in workshops, seminars, and other research office activities while collaborating effectively with supervisors and fellow interns",
                   ].map((item, i) => (
                     <li
                       key={i}
