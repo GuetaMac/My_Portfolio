@@ -404,7 +404,7 @@ export default function Projects({ t }) {
               transition: "color 0.4s",
             }}
           >
-            Selected Work
+            My Projects
           </h2>
         </FadeIn>
         <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
