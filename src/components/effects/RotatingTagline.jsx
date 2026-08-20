@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 
 const DEFAULT_ROLES = [
-  "Frontend Developer",
   "Backend Developer",
   "QA / Software Quality Analyst",
-  "IT Support Specialist",
+  "IT Support",
+  "Data Analyst",
+  "Full Stack Developer",
+  "Software Engineer",
+  "Web Developer",
 ];
 
 const HOLD_MS = 2200;
