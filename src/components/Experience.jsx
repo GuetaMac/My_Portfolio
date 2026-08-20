@@ -1,5 +1,6 @@
-import { CERTS } from "../constants";
-import { FadeIn } from "../utils/hooks";
+import { useState, useEffect } from "react";
+import { CERTS, PROJECTS } from "../constants";
+import { FadeIn, useInView } from "../utils/hooks";
 
 function SectionLabel({ children, t }) {
   return (
@@ -18,6 +19,81 @@ function SectionLabel({ children, t }) {
   );
 }
 
+// Animates a number counting up from 0 once it scrolls into view.
+function CountUp({ to, t }) {
+  const [ref, inView] = useInView(0.4);
+  const [val, setVal] = useState(0);
+
+  useEffect(() => {
+    if (!inView) return;
+    let start = null;
+    const duration = 900;
+    let raf;
+    const step = (ts) => {
+      if (start === null) start = ts;
+      const progress = Math.min((ts - start) / duration, 1);
+      setVal(Math.round(progress * to));
+      if (progress < 1) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [inView, to]);
+
+  return (
+    <span
+      ref={ref}
+      style={{
+        fontFamily: "'Playfair Display', serif",
+        fontSize: "clamp(1.8rem, 3.5vw, 2.6rem)",
+        fontWeight: 700,
+        color: t.accentText,
+        transition: "color 0.4s",
+      }}
+    >
+      {val}
+    </span>
+  );
+}
+
+function StatsStrip({ t }) {
+  const stats = [
+    { label: "Projects Built", value: PROJECTS.length },
+    { label: "Certifications", value: CERTS.length },
+    { label: "Dean's Lister Terms", value: 4 },
+  ];
+  return (
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(3, 1fr)",
+        gap: "24px",
+        marginBottom: "56px",
+        paddingBottom: "40px",
+        borderBottom: "1px solid " + t.divider,
+        transition: "border-color 0.4s",
+      }}
+    >
+      {stats.map((s) => (
+        <div key={s.label}>
+          <CountUp to={s.value} t={t} />
+          <p
+            style={{
+              fontFamily: "monospace",
+              fontSize: "0.6rem",
+              letterSpacing: "0.1em",
+              color: t.muted,
+              marginTop: "6px",
+              transition: "color 0.4s",
+            }}
+          >
+            {s.label.toUpperCase()}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function Experience({ t }) {
   return (
     <section
@@ -26,11 +102,21 @@ export default function Experience({ t }) {
       style={{
         background: t.bgAlt,
         transition: "background 0.4s",
+        "--accent": t.accentText,
       }}
     >
       <style>{`
         .experience-section {
           padding: 120px 48px;
+        }
+        .cert-row {
+          border-left: 3px solid transparent;
+          padding-left: 0px;
+          transition: border-color 0.3s, padding-left 0.3s;
+        }
+        .cert-row:hover {
+          border-left-color: var(--accent);
+          padding-left: 14px;
         }
         .experience-grid {
           display: grid;
@@ -57,6 +143,9 @@ export default function Experience({ t }) {
       <div style={{ maxWidth: "1080px", margin: "0 auto" }}>
         <FadeIn>
           <SectionLabel t={t}>04 — EXPERIENCE & RECOGNITION</SectionLabel>
+        </FadeIn>
+        <FadeIn delay={0.05}>
+          <StatsStrip t={t} />
         </FadeIn>
         <div className="experience-grid">
           {/* Left column */}
@@ -287,6 +376,7 @@ export default function Experience({ t }) {
               {CERTS.map((cert, i) => (
                 <FadeIn key={cert.title} delay={0.12 * i}>
                   <div
+                    className="cert-row"
                     style={{
                       display: "flex",
                       gap: "20px",

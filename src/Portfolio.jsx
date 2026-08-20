@@ -1,17 +1,29 @@
 import { useState, useEffect } from "react";
 import { makeTheme } from "./utils/theme";
 import { CustomCursor, ScrollProgress } from "./utils/cursor";
+import Intro from "./components/Intro";
 import Nav from "./components/Nav";
 import Hero from "./components/Hero";
 import Skills from "./components/Skills";
 import Projects from "./components/Projects";
 import Experience from "./components/Experience";
+import Quiz from "./components/Quiz";
 import Contact from "./components/Contact";
 import { NAV_LINKS } from "./constants";
+
+function shouldShowIntro() {
+  if (typeof window === "undefined") return false;
+  const reducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+  if (reducedMotion) return false;
+  return sessionStorage.getItem("introShown") !== "true";
+}
 
 export default function Portfolio() {
   const [activeSection, setActiveSection] = useState("about");
   const [isDark, setIsDark] = useState(true);
+  const [showIntro, setShowIntro] = useState(shouldShowIntro);
   const t = makeTheme(isDark);
 
   useEffect(() => {
@@ -30,6 +42,13 @@ export default function Portfolio() {
   }, []);
 
   useEffect(() => {
+    document.body.style.overflow = showIntro ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [showIntro]);
+
+  useEffect(() => {
     const observers = NAV_LINKS.map((id) => {
       const el = document.getElementById(id);
       if (!el) return null;
@@ -45,6 +64,11 @@ export default function Portfolio() {
     return () => observers.forEach((o) => o?.disconnect());
   }, []);
 
+  const handleIntroComplete = () => {
+    sessionStorage.setItem("introShown", "true");
+    setShowIntro(false);
+  };
+
   return (
     <div
       style={{
@@ -55,6 +79,7 @@ export default function Portfolio() {
         cursor: "none",
       }}
     >
+      {showIntro && <Intro t={t} onComplete={handleIntroComplete} />}
       <CustomCursor t={t} />
       <ScrollProgress t={t} />
       <Nav
@@ -67,6 +92,7 @@ export default function Portfolio() {
       <Skills t={t} />
       <Projects t={t} />
       <Experience t={t} />
+      <Quiz t={t} />
       <Contact t={t} />
     </div>
   );

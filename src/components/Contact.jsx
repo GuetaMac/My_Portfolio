@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { FadeIn } from "../utils/hooks";
 
 function SectionLabel({ children, t }) {
@@ -18,6 +19,18 @@ function SectionLabel({ children, t }) {
 }
 
 export default function Contact({ t }) {
+  const [copiedLabel, setCopiedLabel] = useState(null);
+
+  const handleCopy = async (label, value) => {
+    try {
+      await navigator.clipboard.writeText(value);
+      setCopiedLabel(label);
+      setTimeout(() => setCopiedLabel(null), 1500);
+    } catch {
+      // clipboard API unavailable — fail silently, the link itself still works
+    }
+  };
+
   return (
     <section
       id="contact"
@@ -68,7 +81,7 @@ export default function Contact({ t }) {
       `}</style>
       <div style={{ maxWidth: "1080px", margin: "0 auto" }}>
         <FadeIn>
-          <SectionLabel t={t}>05 — CONTACT</SectionLabel>
+          <SectionLabel t={t}>06 — CONTACT</SectionLabel>
         </FadeIn>
         <FadeIn delay={0.1}>
           <h2
@@ -116,17 +129,29 @@ export default function Contact({ t }) {
                 label: "Email",
                 value: "aletamackenny@gmail.com",
                 href: "mailto:aletamackenny@gmail.com",
+                cursor: "MAIL",
+                copyable: true,
               },
-              { label: "Phone", value: "09086503617", href: "tel:09086503617" },
+              {
+                label: "Phone",
+                value: "09086503617",
+                href: "tel:09086503617",
+                cursor: "CALL",
+                copyable: true,
+              },
               {
                 label: "Location",
                 value: "Palindan Ibaan, Batangas, PH",
                 href: null,
+                cursor: null,
+                copyable: false,
               },
               {
                 label: "LinkedIn",
                 value: "mac-kenny-aleta",
                 href: "https://www.linkedin.com/in/mac-kenny-aleta-6363ba39b/",
+                cursor: "OPEN",
+                copyable: false,
               },
             ].map((item) => (
               <div
@@ -149,37 +174,67 @@ export default function Contact({ t }) {
                 >
                   {item.label.toUpperCase()}
                 </span>
-                {item.href ? (
-                  <a
-                    href={item.href}
-                    style={{
-                      color: t.bodyStrong,
-                      textDecoration: "none",
-                      fontFamily: "Georgia, serif",
-                      fontSize: "0.9rem",
-                      transition: "color 0.22s",
-                    }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.color = t.accentText)
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.color = t.bodyStrong)
-                    }
-                  >
-                    {item.value}
-                  </a>
-                ) : (
-                  <span
-                    style={{
-                      color: t.body,
-                      fontFamily: "Georgia, serif",
-                      fontSize: "0.9rem",
-                      transition: "color 0.4s",
-                    }}
-                  >
-                    {item.value}
-                  </span>
-                )}
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "14px" }}
+                >
+                  {item.href ? (
+                    <a
+                      href={item.href}
+                      data-magnetic
+                      data-cursor={item.cursor}
+                      style={{
+                        color: t.bodyStrong,
+                        textDecoration: "none",
+                        fontFamily: "Georgia, serif",
+                        fontSize: "0.9rem",
+                        transition: "color 0.22s",
+                      }}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.color = t.accentText)
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.color = t.bodyStrong)
+                      }
+                    >
+                      {item.value}
+                    </a>
+                  ) : (
+                    <span
+                      style={{
+                        color: t.body,
+                        fontFamily: "Georgia, serif",
+                        fontSize: "0.9rem",
+                        transition: "color 0.4s",
+                      }}
+                    >
+                      {item.value}
+                    </span>
+                  )}
+
+                  {item.copyable && (
+                    <button
+                      onClick={() => handleCopy(item.label, item.value)}
+                      data-magnetic
+                      data-cursor="COPY"
+                      aria-label={`Copy ${item.label.toLowerCase()}`}
+                      style={{
+                        background: "transparent",
+                        border: "1px solid " + t.tagBorder,
+                        color:
+                          copiedLabel === item.label ? t.accentText : t.muted,
+                        fontFamily: "monospace",
+                        fontSize: "0.58rem",
+                        letterSpacing: "0.08em",
+                        padding: "4px 10px",
+                        borderRadius: "4px",
+                        cursor: "none",
+                        transition: "color 0.25s, border-color 0.25s",
+                      }}
+                    >
+                      {copiedLabel === item.label ? "COPIED" : "COPY"}
+                    </button>
+                  )}
+                </div>
               </div>
             ))}
           </div>

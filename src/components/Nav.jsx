@@ -44,6 +44,9 @@ export default function Nav({ active, isDark, onToggle, t }) {
         .nav-mobile-menu {
           display: none;
         }
+        .nav-cmdk-hint {
+          display: inline-flex;
+        }
 
         @media (max-width: 640px) {
           .nav-bar {
@@ -57,6 +60,9 @@ export default function Nav({ active, isDark, onToggle, t }) {
           }
           .nav-mobile-menu.open {
             display: flex;
+          }
+          .nav-cmdk-hint {
+            display: none;
           }
         }
       `}</style>
@@ -76,6 +82,7 @@ export default function Nav({ active, isDark, onToggle, t }) {
         {NAV_LINKS.map((link) => (
           <li key={link}>
             <button
+              data-magnetic
               onClick={() => scrollTo(link)}
               style={{
                 position: "relative",
@@ -111,61 +118,92 @@ export default function Nav({ active, isDark, onToggle, t }) {
       </ul>
 
       <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-        <button
-          onClick={onToggle}
+        {/* NEW: subtle hint pointing at the command palette (Cmd/Ctrl+K) */}
+        <span
+          className="nav-cmdk-hint"
           style={{
+            alignItems: "center",
+            gap: "4px",
+            fontFamily: "monospace",
+            fontSize: "0.6rem",
+            color: t.muted,
+            border: "1px solid " + t.cardBorder,
+            borderRadius: "3px",
+            padding: "5px 8px",
+          }}
+        >
+          <kbd style={{ fontFamily: "inherit" }}>⌘</kbd>
+          <kbd style={{ fontFamily: "inherit" }}>K</kbd>
+        </span>
+
+        <button
+          data-magnetic
+          onClick={onToggle}
+          aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+          style={{
+            position: "relative",
+            width: "34px",
+            height: "34px",
             background: t.toggleBg,
             border: "1px solid " + t.cardBorder,
             color: t.toggleColor,
-            padding: "6px 14px",
             cursor: "none",
-            fontFamily: "monospace",
-            fontSize: "0.65rem",
-            letterSpacing: "0.12em",
             display: "flex",
             alignItems: "center",
-            gap: "6px",
+            justifyContent: "center",
             transition: "all 0.25s",
-            borderRadius: "2px",
+            borderRadius: "50%",
+            overflow: "hidden",
           }}
         >
-          {isDark ? (
-            <>
-              <svg
-                width="11"
-                height="11"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <circle cx="12" cy="12" r="5" />
-                <line x1="12" y1="1" x2="12" y2="3" />
-                <line x1="12" y1="21" x2="12" y2="23" />
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-                <line x1="1" y1="12" x2="3" y2="12" />
-                <line x1="21" y1="12" x2="23" y2="12" />
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-              </svg>
-              LIGHT
-            </>
-          ) : (
-            <>
-              <svg
-                width="11"
-                height="11"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-              </svg>
-              DARK
-            </>
-          )}
+          {/* Sun/moon morph: both icons always mounted, cross-fade + rotate
+              between them instead of hard-swapping on toggle. */}
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            style={{
+              position: "absolute",
+              opacity: isDark ? 1 : 0,
+              transform: isDark
+                ? "rotate(0deg) scale(1)"
+                : "rotate(-90deg) scale(0.5)",
+              transition:
+                "opacity 0.35s cubic-bezier(0.16,1,0.3,1), transform 0.35s cubic-bezier(0.16,1,0.3,1)",
+            }}
+          >
+            <circle cx="12" cy="12" r="5" />
+            <line x1="12" y1="1" x2="12" y2="3" />
+            <line x1="12" y1="21" x2="12" y2="23" />
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+            <line x1="1" y1="12" x2="3" y2="12" />
+            <line x1="21" y1="12" x2="23" y2="12" />
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+          </svg>
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            style={{
+              position: "absolute",
+              opacity: isDark ? 0 : 1,
+              transform: isDark
+                ? "rotate(90deg) scale(0.5)"
+                : "rotate(0deg) scale(1)",
+              transition:
+                "opacity 0.35s cubic-bezier(0.16,1,0.3,1), transform 0.35s cubic-bezier(0.16,1,0.3,1)",
+            }}
+          >
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+          </svg>
         </button>
 
         {/* Hamburger toggle — mobile only */}
