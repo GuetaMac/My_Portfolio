@@ -83,6 +83,9 @@ export default function ChatWidget({ t }) {
       ? (window.visualViewport?.height ?? window.innerHeight)
       : null,
   );
+  const [viewportOffsetTop, setViewportOffsetTop] = useState(() =>
+    typeof window !== "undefined" ? (window.visualViewport?.offsetTop ?? 0) : 0,
+  );
   const bottomRef = useRef(null);
   const inputRef = useRef(null);
   const panelRef = useRef(null);
@@ -105,6 +108,7 @@ export default function ChatWidget({ t }) {
     if (!vv) return;
     function update() {
       setViewportHeight(vv.height);
+      setViewportOffsetTop(vv.offsetTop);
     }
     update();
     vv.addEventListener("resize", update);
@@ -271,7 +275,7 @@ export default function ChatWidget({ t }) {
             zIndex: 1000,
             cursor: "auto",
             ...(isMobile && {
-              top: 0,
+              top: viewportOffsetTop + "px",
               left: 0,
               right: 0,
               bottom: "auto",
