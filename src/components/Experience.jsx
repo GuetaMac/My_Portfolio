@@ -219,7 +219,7 @@ export default function Experience({ t }) {
                   }}
                 >
                   {[
-                    "Led development and debugging of a Research Publication Management System",
+                    "Developed and debugged a Research Publication Management System",
                     "Designed and implemented new system features based on supervisor feedback and user requirements",
                     "Improved the user interface (UI) and developed responsive layouts for better user experience across devices",
                     "Performed system debugging, testing, and issue resolution to improve functionality and performance",
