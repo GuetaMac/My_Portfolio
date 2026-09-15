@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { SKILLS } from "../constants";
 import { FadeIn } from "../utils/hooks";
+import ScrambleText from "./effects/ScrambleText"; // NEW
 
 function SectionLabel({ children, t }) {
   return (
@@ -15,6 +17,77 @@ function SectionLabel({ children, t }) {
     >
       {children}
     </p>
+  );
+}
+
+// Category card that gently tilts toward the cursor — a subtle 3D
+// wink instead of a plain static box.
+function SkillCard({ category, items, t, delay }) {
+  const [tilt, setTilt] = useState({ rx: 0, ry: 0 });
+
+  const handleMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width - 0.5;
+    const py = (e.clientY - rect.top) / rect.height - 0.5;
+    setTilt({ rx: py * -7, ry: px * 7 });
+  };
+  const handleLeave = () => setTilt({ rx: 0, ry: 0 });
+
+  return (
+    <FadeIn delay={delay}>
+      <div
+        className="skills-card"
+        onMouseMove={handleMove}
+        onMouseLeave={handleLeave}
+        style={{
+          background: t.bg,
+          transition:
+            "background 0.4s, transform 0.3s cubic-bezier(0.16,1,0.3,1)",
+          transform: `perspective(700px) rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg)`,
+          transformStyle: "preserve-3d",
+        }}
+      >
+        <p
+          style={{
+            color: t.accentText,
+            fontFamily: "monospace",
+            fontSize: "0.6rem",
+            letterSpacing: "0.16em",
+            marginBottom: "18px",
+            transition: "color 0.4s",
+          }}
+        >
+          {category.toUpperCase()}
+        </p>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+          {items.map((skill) => (
+            <span
+              key={skill}
+              data-magnetic
+              style={{
+                padding: "5px 12px",
+                border: "1px solid " + t.tagBorder,
+                color: t.tagText,
+                fontFamily: "monospace",
+                fontSize: "0.68rem",
+                cursor: "none",
+                transition: "all 0.25s",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = t.accentText;
+                e.currentTarget.style.color = t.accentText;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = t.tagBorder;
+                e.currentTarget.style.color = t.tagText;
+              }}
+            >
+              {skill}
+            </span>
+          ))}
+        </div>
+      </div>
+    </FadeIn>
   );
 }
 
@@ -69,7 +142,7 @@ export default function Skills({ t }) {
               transition: "color 0.4s",
             }}
           >
-            Technical Toolkit
+            <ScrambleText text="Technical Toolkit" />
           </h2>
         </FadeIn>
         <div
@@ -80,53 +153,13 @@ export default function Skills({ t }) {
           }}
         >
           {Object.entries(SKILLS).map(([category, items], i) => (
-            <FadeIn key={category} delay={0.08 * i}>
-              <div
-                className="skills-card"
-                style={{
-                  background: t.bg,
-                  transition: "background 0.4s",
-                }}
-              >
-                <p
-                  style={{
-                    color: t.accentText,
-                    fontFamily: "monospace",
-                    fontSize: "0.6rem",
-                    letterSpacing: "0.16em",
-                    marginBottom: "18px",
-                    transition: "color 0.4s",
-                  }}
-                >
-                  {category.toUpperCase()}
-                </p>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-                  {items.map((skill) => (
-                    <span
-                      key={skill}
-                      style={{
-                        padding: "5px 12px",
-                        border: "1px solid " + t.tagBorder,
-                        color: t.tagText,
-                        fontFamily: "monospace",
-                        fontSize: "0.68rem",
-                        transition: "all 0.25s",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.borderColor = t.accentText;
-                        e.currentTarget.style.color = t.accentText;
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.borderColor = t.tagBorder;
-                        e.currentTarget.style.color = t.tagText;
-                      }}
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </FadeIn>
+            <SkillCard
+              key={category}
+              category={category}
+              items={items}
+              t={t}
+              delay={0.08 * i}
+            />
           ))}
         </div>
       </div>

@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { PROJECTS } from "../constants";
 import { FadeIn } from "../utils/hooks";
 import { motion } from "framer-motion";
+import ScrambleText from "./effects/ScrambleText"; // NEW
 
 function SectionLabel({ children, t }) {
   return (
@@ -25,9 +26,32 @@ function ProjectCard({ project, index, t }) {
   const [showImages, setShowImages] = useState(false);
   const [hovered, setHovered] = useState(false);
 
+  // NEW: swipe support for the image frame (mobile-friendly)
+  const touchStartX = useRef(null);
+  const SWIPE_THRESHOLD = 40; // px
+
   const goTo = (i) => {
     setImgIndex(i);
   };
+
+  const next = () =>
+    goTo(imgIndex === project.images.length - 1 ? 0 : imgIndex + 1);
+  const prev = () =>
+    goTo(imgIndex === 0 ? project.images.length - 1 : imgIndex - 1);
+
+  const onTouchStart = (e) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+  const onTouchEnd = (e) => {
+    if (touchStartX.current === null) return;
+    const delta = e.changedTouches[0].clientX - touchStartX.current;
+    if (Math.abs(delta) > SWIPE_THRESHOLD) {
+      if (delta < 0) next();
+      else prev();
+    }
+    touchStartX.current = null;
+  };
+
   return (
     <FadeIn delay={0.1 * index}>
       <div
@@ -160,6 +184,8 @@ function ProjectCard({ project, index, t }) {
                 setShowImages((p) => !p);
                 setImgIndex(0);
               }}
+              data-magnetic
+              data-cursor={showImages ? "HIDE" : "VIEW"}
               style={{
                 display: "inline-flex",
                 alignItems: "center",
@@ -171,7 +197,7 @@ function ProjectCard({ project, index, t }) {
                 fontSize: "0.65rem",
                 letterSpacing: "0.12em",
                 padding: "7px 16px",
-                cursor: "pointer",
+                cursor: "none",
                 borderRadius: "4px",
                 marginBottom: showImages ? "16px" : 0,
                 transition: "all 0.2s",
@@ -196,13 +222,8 @@ function ProjectCard({ project, index, t }) {
                   {/* Prev */}
                   <button
                     className="project-slider-btn"
-                    onClick={() =>
-                      goTo(
-                        imgIndex === 0
-                          ? project.images.length - 1
-                          : imgIndex - 1,
-                      )
-                    }
+                    onClick={prev}
+                    data-magnetic
                     style={{
                       background: "rgba(255,255,255,0.05)",
                       border: "1px solid " + t.cardBorder,
@@ -210,7 +231,7 @@ function ProjectCard({ project, index, t }) {
                       width: "44px",
                       height: "44px",
                       borderRadius: "8px",
-                      cursor: "pointer",
+                      cursor: "none",
                       fontSize: "22px",
                       display: "flex",
                       alignItems: "center",
@@ -222,9 +243,11 @@ function ProjectCard({ project, index, t }) {
                     ‹
                   </button>
 
-                  {/* Image frame */}
+                  {/* Image frame — now swipeable on touch devices */}
                   <div
                     className="project-image-frame"
+                    onTouchStart={onTouchStart}
+                    onTouchEnd={onTouchEnd}
                     style={{
                       flex: 1,
                       position: "relative",
@@ -234,6 +257,7 @@ function ProjectCard({ project, index, t }) {
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
+                      touchAction: "pan-y", // let vertical scroll pass through, capture horizontal swipe
                     }}
                   >
                     <motion.img
@@ -247,7 +271,10 @@ function ProjectCard({ project, index, t }) {
                         height: "100%",
                         objectFit: "contain",
                         display: "block",
+                        userSelect: "none",
+                        WebkitUserDrag: "none",
                       }}
+                      draggable={false}
                     />
 
                     {/* Counter badge */}
@@ -268,18 +295,34 @@ function ProjectCard({ project, index, t }) {
                     >
                       {imgIndex + 1} / {project.images.length}
                     </div>
+
+                    {/* Swipe hint — mobile only, fades in briefly */}
+                    <div
+                      className="project-swipe-hint"
+                      style={{
+                        position: "absolute",
+                        bottom: "10px",
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        fontFamily: "monospace",
+                        fontSize: "0.58rem",
+                        letterSpacing: "0.08em",
+                        color: "rgba(255,255,255,0.45)",
+                        background: "rgba(0,0,0,0.5)",
+                        padding: "3px 9px",
+                        borderRadius: "10px",
+                        pointerEvents: "none",
+                      }}
+                    >
+                      ← swipe →
+                    </div>
                   </div>
 
                   {/* Next */}
                   <button
                     className="project-slider-btn"
-                    onClick={() =>
-                      goTo(
-                        imgIndex === project.images.length - 1
-                          ? 0
-                          : imgIndex + 1,
-                      )
-                    }
+                    onClick={next}
+                    data-magnetic
                     style={{
                       background: "rgba(255,255,255,0.05)",
                       border: "1px solid " + t.cardBorder,
@@ -287,7 +330,7 @@ function ProjectCard({ project, index, t }) {
                       width: "44px",
                       height: "44px",
                       borderRadius: "8px",
-                      cursor: "pointer",
+                      cursor: "none",
                       fontSize: "22px",
                       display: "flex",
                       alignItems: "center",
@@ -363,6 +406,9 @@ export default function Projects({ t }) {
           width: 44px;
           height: 44px;
         }
+        .project-swipe-hint {
+          display: none;
+        }
 
         @media (max-width: 640px) {
           .projects-section {
@@ -386,6 +432,9 @@ export default function Projects({ t }) {
             height: 34px;
             font-size: 18px !important;
           }
+          .project-swipe-hint {
+            display: block;
+          }
         }
       `}</style>
       <div style={{ maxWidth: "1080px", margin: "0 auto" }}>
@@ -404,7 +453,7 @@ export default function Projects({ t }) {
               transition: "color 0.4s",
             }}
           >
-            My Projects
+            <ScrambleText text="My Projects" />
           </h2>
         </FadeIn>
         <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
