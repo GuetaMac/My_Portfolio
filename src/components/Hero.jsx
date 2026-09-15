@@ -1,7 +1,6 @@
 import { useState } from "react";
 import photo from "../assets/photo.jpg";
 import { FadeIn, AnimatedWord } from "../utils/hooks";
-import RotatingTagline from "./effects/RotatingTagline"; // NEW
 
 export default function Hero({ t }) {
   const [imgLoaded, setImgLoaded] = useState(false);
@@ -133,7 +132,7 @@ export default function Hero({ t }) {
               <AnimatedWord word="Kenny" delay={0.22} color={t.heading} />
             </h1>
           </div>
-          <div style={{ overflow: "hidden", marginBottom: "20px" }}>
+          <div style={{ overflow: "hidden", marginBottom: "32px" }}>
             <h1
               style={{
                 fontFamily: "'Playfair Display', Georgia, serif",
@@ -153,29 +152,6 @@ export default function Hero({ t }) {
               <AnimatedWord word="Aleta" delay={0.42} color={t.accentText} />
             </h1>
           </div>
-
-          {/* NEW: rotating role tagline — cycles through his positioning */}
-          <FadeIn delay={0.5}>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-                marginBottom: "24px",
-              }}
-            >
-              <span
-                style={{
-                  width: "6px",
-                  height: "6px",
-                  borderRadius: "50%",
-                  background: t.accentText,
-                  flexShrink: 0,
-                }}
-              />
-              <RotatingTagline t={t} />
-            </div>
-          </FadeIn>
 
           <FadeIn delay={0.56}>
             <p
@@ -210,8 +186,6 @@ export default function Hero({ t }) {
             >
               <a
                 href="mailto:aletamackenny@gmail.com"
-                data-magnetic
-                data-cursor="MAIL"
                 style={{
                   padding: "11px 28px",
                   border: "1px solid " + t.accentText,
@@ -235,14 +209,38 @@ export default function Hero({ t }) {
               >
                 Get in touch
               </a>
+              <a
+                href="/resume.pdf"
+                download="Mac Kenny Aleta - Resume.pdf"
+                style={{
+                  padding: "11px 28px",
+                  border: "1px solid " + t.cardBorder,
+                  color: t.bodyStrong,
+                  background: "transparent",
+                  fontFamily: "monospace",
+                  fontSize: "0.65rem",
+                  letterSpacing: "0.16em",
+                  textDecoration: "none",
+                  textTransform: "uppercase",
+                  transition: "all 0.22s",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = t.bodyStrong;
+                  e.currentTarget.style.color = t.isDark ? "#080808" : "#fff";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "transparent";
+                  e.currentTarget.style.color = t.bodyStrong;
+                }}
+              >
+                Download Resume
+              </a>
               <button
                 onClick={() =>
                   document
                     .getElementById("projects")
                     ?.scrollIntoView({ behavior: "smooth" })
                 }
-                data-magnetic
-                data-cursor="VIEW"
                 style={{
                   padding: "11px 28px",
                   border: "1px solid " + t.cardBorder,
