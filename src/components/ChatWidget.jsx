@@ -75,9 +75,45 @@ export default function ChatWidget({ t }) {
   const [messages, setMessages] = useState([]); // { role: "user"|"model", text }
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
+  const [isMobile, setIsMobile] = useState(
+    () => typeof window !== "undefined" && window.innerWidth <= 480,
+  );
+  const [viewportHeight, setViewportHeight] = useState(() =>
+    typeof window !== "undefined"
+      ? (window.visualViewport?.height ?? window.innerHeight)
+      : null,
+  );
   const bottomRef = useRef(null);
   const inputRef = useRef(null);
   const panelRef = useRef(null);
+
+  useEffect(() => {
+    function onResize() {
+      setIsMobile(window.innerWidth <= 480);
+    }
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  // On phones, the visual viewport shrinks when the on-screen keyboard
+  // opens — some in-app browsers (Messenger, etc.) don't reflow a
+  // 100dvh panel to match, which was hiding the input behind the
+  // keyboard. Track the real visible height and size the panel to it.
+  useEffect(() => {
+    if (!open || !isMobile) return;
+    const vv = window.visualViewport;
+    if (!vv) return;
+    function update() {
+      setViewportHeight(vv.height);
+    }
+    update();
+    vv.addEventListener("resize", update);
+    vv.addEventListener("scroll", update);
+    return () => {
+      vv.removeEventListener("resize", update);
+      vv.removeEventListener("scroll", update);
+    };
+  }, [open, isMobile]);
 
   useEffect(() => {
     if (open) bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -212,16 +248,6 @@ export default function ChatWidget({ t }) {
         .mk-input::placeholder {
           opacity: 0.6;
         }
-        @media (max-width: 480px) {
-          .mk-chat-panel {
-            right: 0 !important;
-            left: 0 !important;
-            bottom: 0 !important;
-            width: 100vw !important;
-            height: 100dvh !important;
-            max-height: none !important;
-          }
-        }
       `}</style>
 
       {open && (
@@ -244,6 +270,16 @@ export default function ChatWidget({ t }) {
             flexDirection: "column",
             zIndex: 1000,
             cursor: "auto",
+            ...(isMobile && {
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: "auto",
+              width: "100vw",
+              height: (viewportHeight ?? window.innerHeight) + "px",
+              maxHeight: "none",
+              border: "none",
+            }),
           }}
         >
           <div
