@@ -191,10 +191,13 @@ export default function Hero({ t }) {
                 textJustify: "inter-word",
               }}
             >
-              IT graduate specializing in web system development. Passionate
-              about building responsive websites and functional web applications
-              that provide seamless user experiences and solve real-world
-              challenges.
+              IT graduate with hands-on experience in web system development,
+              data analysis, database management, and IT support. Passionate
+              about developing functional and user-friendly web applications,
+              analyzing data to generate meaningful insights, and providing
+              practical technology solutions to real-world challenges. Eager to
+              apply my technical skills, continuously learn new technologies,
+              and contribute effectively in a professional IT environment.
             </p>
           </FadeIn>
 
