@@ -7,6 +7,7 @@ import Skills from "./components/Skills";
 import Projects from "./components/Projects";
 import Experience from "./components/Experience";
 import Contact from "./components/Contact";
+import ChatWidget from "./components/ChatWidget";
 import { NAV_LINKS } from "./constants";
 
 export default function Portfolio() {
@@ -68,6 +69,7 @@ export default function Portfolio() {
       <Projects t={t} />
       <Experience t={t} />
       <Contact t={t} />
+      <ChatWidget t={t} />
     </div>
   );
 }
