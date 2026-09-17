@@ -21,6 +21,11 @@ export default function Hero({ t }) {
         .hero-section {
           padding: 100px 48px 80px;
         }
+        @media (min-width: 641px) {
+          .hero-section {
+            padding: 64px 56px 80px;
+          }
+        }
         .hero-grid {
           display: grid;
           grid-template-columns: 1fr 220px;

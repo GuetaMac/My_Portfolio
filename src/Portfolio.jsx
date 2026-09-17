@@ -10,6 +10,7 @@ import Experience from "./components/Experience";
 import Quiz from "./components/Quiz";
 import Contact from "./components/Contact";
 import ChatWidget from "./components/ChatWidget";
+import CommandPalette from "./components/effects/CommandPalette";
 import { NAV_LINKS } from "./constants";
 
 function shouldShowIntro() {
@@ -70,6 +71,68 @@ export default function Portfolio() {
     setShowIntro(false);
   };
 
+  const scrollTo = (id) =>
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+
+  const commands = [
+    { label: "Go to About", hint: "section", action: () => scrollTo("about") },
+    {
+      label: "Go to Skills",
+      hint: "section",
+      action: () => scrollTo("skills"),
+    },
+    {
+      label: "Go to Projects",
+      hint: "section",
+      action: () => scrollTo("projects"),
+    },
+    {
+      label: "Go to Experience",
+      hint: "section",
+      action: () => scrollTo("experience"),
+    },
+    { label: "Take the Quiz", hint: "section", action: () => scrollTo("quiz") },
+    {
+      label: "Go to Contact",
+      hint: "section",
+      action: () => scrollTo("contact"),
+    },
+    {
+      label: "Toggle theme",
+      hint: isDark ? "light mode" : "dark mode",
+      action: () => setIsDark((d) => !d),
+    },
+    {
+      label: "Email me",
+      hint: "mailto",
+      action: () => (window.location.href = "mailto:aletamackenny@gmail.com"),
+    },
+    {
+      label: "Download resume",
+      hint: "pdf",
+      action: () => {
+        const a = document.createElement("a");
+        a.href = "/resume.pdf";
+        a.download = "Mac Kenny Aleta - Resume.pdf";
+        a.click();
+      },
+    },
+    {
+      label: "Open GitHub",
+      hint: "new tab",
+      action: () => window.open("https://github.com/GuetaMac", "_blank"),
+    },
+    {
+      label: "Open LinkedIn",
+      hint: "new tab",
+      action: () =>
+        window.open(
+          "https://www.linkedin.com/in/mac-kenny-aleta-6363ba39b/",
+          "_blank",
+        ),
+    },
+  ];
+
   return (
     <div
       style={{
@@ -80,6 +143,13 @@ export default function Portfolio() {
         cursor: "none",
       }}
     >
+      <style>{`
+        @media (min-width: 641px) {
+          .page-content {
+            padding-left: 76px;
+          }
+        }
+      `}</style>
       {showIntro && <Intro t={t} onComplete={handleIntroComplete} />}
       <CustomCursor t={t} />
       <ScrollProgress t={t} />
@@ -89,12 +159,15 @@ export default function Portfolio() {
         onToggle={() => setIsDark(!isDark)}
         t={t}
       />
-      <Hero t={t} />
-      <Skills t={t} />
-      <Projects t={t} />
-      <Experience t={t} />
-      <Quiz t={t} />
-      <Contact t={t} />
+      <CommandPalette commands={commands} t={t} />
+      <div className="page-content">
+        <Hero t={t} />
+        <Skills t={t} />
+        <Projects t={t} />
+        <Experience t={t} />
+        <Quiz t={t} />
+        <Contact t={t} />
+      </div>
       <ChatWidget t={t} />
     </div>
   );
