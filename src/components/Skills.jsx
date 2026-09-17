@@ -2,6 +2,7 @@ import { useState } from "react";
 import { SKILLS } from "../constants";
 import { FadeIn } from "../utils/hooks";
 import ScrambleText from "./effects/ScrambleText"; // NEW
+import GithubStats from "./effects/GithubStats";
 
 function SectionLabel({ children, t }) {
   return (
@@ -162,6 +163,10 @@ export default function Skills({ t }) {
             />
           ))}
         </div>
+
+        <FadeIn delay={0.3}>
+          <GithubStats t={t} />
+        </FadeIn>
       </div>
     </section>
   );

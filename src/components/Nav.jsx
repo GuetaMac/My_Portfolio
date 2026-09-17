@@ -95,6 +95,29 @@ function openCommandPalette() {
   );
 }
 
+function openTerminal() {
+  window.dispatchEvent(new Event("mkg:open-terminal"));
+}
+
+function TerminalIcon() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <rect x="2.5" y="4" width="19" height="16" rx="2" />
+      <polyline points="6.5 9.5 10.5 12 6.5 14.5" />
+      <line x1="12.5" y1="14.5" x2="16.5" y2="14.5" />
+    </svg>
+  );
+}
+
 export default function Nav({ active, isDark, onToggle, t }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -395,6 +418,29 @@ export default function Nav({ active, isDark, onToggle, t }) {
             <span>K</span>
           </button>
 
+          {/* Terminal trigger — visible + tappable, works on mobile too */}
+          <button
+            data-magnetic
+            data-cursor="TERMINAL"
+            onClick={openTerminal}
+            aria-label="Open terminal"
+            style={{
+              width: "34px",
+              height: "34px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              background: "none",
+              border: "1px solid " + t.cardBorder,
+              borderRadius: "6px",
+              cursor: "none",
+              color: t.accentText,
+              transition: "all 0.2s",
+            }}
+          >
+            <TerminalIcon />
+          </button>
+
           {/* Socials */}
           <div
             style={{
@@ -483,6 +529,26 @@ export default function Nav({ active, isDark, onToggle, t }) {
             }}
           >
             {ThemeToggleIcon}
+          </button>
+
+          <button
+            data-cursor="TERMINAL"
+            onClick={openTerminal}
+            aria-label="Open terminal"
+            style={{
+              width: "34px",
+              height: "34px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              background: "none",
+              border: "1px solid " + t.cardBorder,
+              borderRadius: "6px",
+              color: t.accentText,
+              transition: "all 0.2s",
+            }}
+          >
+            <TerminalIcon />
           </button>
 
           <button

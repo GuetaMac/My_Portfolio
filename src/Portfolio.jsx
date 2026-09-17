@@ -11,6 +11,7 @@ import Quiz from "./components/Quiz";
 import Contact from "./components/Contact";
 import ChatWidget from "./components/ChatWidget";
 import CommandPalette from "./components/effects/CommandPalette";
+import Terminal from "./components/effects/Terminal";
 import { NAV_LINKS } from "./constants";
 
 function shouldShowIntro() {
@@ -41,6 +42,13 @@ export default function Portfolio() {
     return () => {
       document.body.style.cursor = "";
     };
+  }, []);
+
+  useEffect(() => {
+    console.log(
+      "%cLooking at the source? Type 'help' anywhere on this page for a hidden terminal.",
+      "font-family: monospace; color: #34e07f;",
+    );
   }, []);
 
   useEffect(() => {
@@ -160,6 +168,11 @@ export default function Portfolio() {
         t={t}
       />
       <CommandPalette commands={commands} t={t} />
+      <Terminal
+        t={t}
+        isDark={isDark}
+        onToggleTheme={() => setIsDark((d) => !d)}
+      />
       <div className="page-content">
         <Hero t={t} />
         <Skills t={t} />
