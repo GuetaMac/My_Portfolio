@@ -62,6 +62,7 @@ import acweb2 from "./assets/ac-website2.png";
 import acweb3 from "./assets/ac-website3.png";
 import acweb4 from "./assets/ac-website4.png";
 import acweb5 from "./assets/ac-website5.png";
+import poster1 from "./assets/poster1.png";
 
 export const PROJECTS = [
   {
@@ -140,6 +141,23 @@ export const PROJECTS = [
     tech: ["HTML", "Tailwind CSS", "JavaScript"],
     highlight: "Client Project",
     images: [acweb1, acweb2, acweb3, acweb4, acweb5], // add screenshots here later, e.g. [imgAcWeb1, imgAcWeb2]
+  },
+  {
+    id: "08",
+    title: "Poster Press",
+    type: "Personal Project",
+    year: "2026",
+    description:
+      "A YouTube-to-poster maker built with React. Paste a video link and instantly generate a 1080×1350 poster in one of 14 styles (Cinematic, Neon, Vinyl, Blurred Glass, and more) with a customizable accent color.",
+    tech: [
+      "React",
+      "HTML5 Canvas",
+      "JavaScript",
+      "Tailwind CSS",
+      "YouTube oEmbed API",
+    ],
+    highlight: "Personal Project",
+    images: [poster1], // add screenshots here later, e.g. [imgAcWeb1, imgAcWeb2]
   },
 ];
 export const CERTS = [
